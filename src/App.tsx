@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import TodoList from "./components/TodoList";
+import NewTodoForm from "./components/NewTodoForm";
+import Navigation from "./components/Navigation";
+import TodoClasses from "./components/TodoClasses";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const todoClasses: string[] = ['All', 'Active', 'Completed']
+    const [type, setType] = useState(0)
+
+    const onClickType = (type: number) => {
+        setType(type)
+    }
+
+    return (
+        <>
+            <Navigation/>
+            <div className="flex flex-col items-center">
+                <NewTodoForm/>
+                <TodoList active={type}/>
+                <TodoClasses classes={todoClasses} setClass={onClickType} active={type}/>
+            </div>
+        </>
+    );
 }
 
 export default App;
