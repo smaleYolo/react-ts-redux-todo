@@ -3,26 +3,42 @@ import TodoList from "./components/TodoList";
 import NewTodoForm from "./components/NewTodoForm";
 import Navigation from "./components/Navigation";
 import TodoClasses from "./components/TodoClasses";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import TodosPage from "./pages/TodosPage";
+import Login from "./pages/Login";
+import login from "./pages/Login";
+
+export type UserLogin = {
+    login: string,
+    password: string,
+}
 
 function App() {
+    const [isAuth, setIsAuth] = useState(false)
 
-    const todoClasses: string[] = ['All', 'Active', 'Completed']
-    const [type, setType] = useState(0)
+    const authUser = ({login, password}: UserLogin) => {
+        setIsAuth(true)
+    }
 
-    const onClickType = (type: number) => {
-        setType(type)
+    const logOutUser = () => {
+        setIsAuth(false)
     }
 
     return (
-        <>
-            <Navigation/>
-            <div className="flex flex-col items-center">
-                <NewTodoForm/>
-                <TodoList active={type}/>
-                <TodoClasses classes={todoClasses} setClass={onClickType} active={type}/>
-            </div>
-        </>
-    );
+        <BrowserRouter>
+            <Navigation isAuth={isAuth} logOut={logOutUser}/>
+            {isAuth ? (
+                <Routes>
+                    <Route path="/" element={<TodosPage/>}/>
+                </Routes>
+            ) : (
+                <Routes>
+                    <Route path="/" element={<Login authUser={authUser}/>}/>
+                    <Route path="*" element={<Login authUser={authUser}/>}/>
+                </Routes>
+            )}
+        </BrowserRouter>
+    )
 }
 
 export default App;

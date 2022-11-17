@@ -132,7 +132,7 @@ export const TodoSlice = createSlice({
                 state.error = null;
             })
             .addCase(addTodo.fulfilled, (state, action) => {
-                state.todos.push(action.payload)
+                state.todos.unshift(action.payload)
             })
             .addCase(removeTodo.pending, (state) => {
                 state.error = null;
